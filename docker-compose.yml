@@ -1,0 +1,40 @@
+# Full local stack: the Streamlit app + a local Ollama server for the Chat tab.
+#
+#   docker compose up -d --build
+#   docker compose exec ollama ollama pull llama3.2   # one-time model pull
+#   open http://localhost:8501
+#
+# The Preview and Auto Report tabs work without Ollama; only Chat needs it.
+
+services:
+  app:
+    build: .
+    ports:
+      - "8501:8501"
+    environment:
+      # Talk to the ollama service below over the compose network.
+      OLLAMA_HOST: http://ollama:11434
+      OLLAMA_MODEL: llama3.2
+    depends_on:
+      - ollama
+    restart: unless-stopped
+
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      # Exposed on the host too, so `ollama pull` / other tools can reach it.
+      - "11434:11434"
+    volumes:
+      - ollama-models:/root/.ollama
+    restart: unless-stopped
+    # To use an NVIDIA GPU, install the NVIDIA Container Toolkit and uncomment:
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+
+volumes:
+  ollama-models:

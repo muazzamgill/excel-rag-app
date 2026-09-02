@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Local data — don't commit uploaded spreadsheets or generated reports
+*.xlsx
+*.xls
+*_report.pdf
+*_report.xlsx
+
+# Streamlit local secrets (never commit)
+.streamlit/secrets.toml
